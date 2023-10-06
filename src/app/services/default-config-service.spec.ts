@@ -3,13 +3,18 @@ import { DefaultConfigService } from './default-config.service';
 describe('DefaultConfigService', () => {
   let service: DefaultConfigService; 
   
-  it('should create default config service', () => {
+  it('should create defaultConfigService', () => {
     service = new DefaultConfigService(); 
     expect(service).toBeTruthy();
   });
 
   it('should have the right default theme', () => {
     expect(service.defaultTheme).toBe('indigo-pink');
+  });
+  it('should call defaultExternalServices getter', () => {
+    const spyGetDefaultTheme = jest.spyOn(service, 'defaultTheme', 'get');
+    service.defaultTheme;
+    expect(spyGetDefaultTheme).toHaveBeenCalled();
   });
 
   it('should call defaultExternalServices getter', () => {
@@ -84,16 +89,16 @@ describe('DefaultConfigService', () => {
     expect(spyGetExportedDefaultConfig).toHaveBeenCalled();
   });
   describe(' default dashboard configuration', () => {
-    it('the dashboard lines configuration should display at least 1 line', () => {
+    it('should display at least 1 line', () => {
       expect(service.defaultDashboardLines).toHaveLength(1);
     });
 
-    it('the line by default should contain 3 task statuses', () => {
+    it('should contain 3 task statuses', () => {
       const defaultDashboardLines = service.defaultDashboardLines;
       const taskStatuses = defaultDashboardLines.map( line => line.taskStatusesGroups); 
       expect(taskStatuses[0]).toHaveLength(3);
     });
-    it('the line by default should have finished, running, error, task statuses by default ', () => {
+    it('should have finished, running, error, task statuses by default ', () => {
       const defaultDashboardLines = service.defaultDashboardLines;
       const taskStatuses = defaultDashboardLines.map( line => line.taskStatusesGroups); 
       expect(taskStatuses[0].map(taskStatus => taskStatus.name === 'Finished')).toBeTruthy(); 
@@ -101,7 +106,7 @@ describe('DefaultConfigService', () => {
       expect(taskStatuses[0].map(taskStatus => taskStatus.name === 'Errors')).toBeTruthy();  
     });
 
-    it('default DashboardSplitLines should return 1 line', ()=> {
+    it('should return 1 line', ()=> {
       const defaultDashboardSplitLines :number = service.defaultDashboardSplitLines;
       expect(defaultDashboardSplitLines).toEqual(1);
     });
